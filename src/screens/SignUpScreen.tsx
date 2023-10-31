@@ -33,14 +33,6 @@ const SignUpScreen = () => {
     }
   };
 
-  const toSignIn = async () => {
-    try {
-      navigation.navigate("SignIn" as never);
-    } catch (error) {
-      console.error('Erro ao mudar pra tela de login:', error);
-    }
-  };
-
   return (
     <View>
       <Text>Cadastro</Text>
@@ -49,7 +41,6 @@ const SignUpScreen = () => {
       <TextInput placeholder="Primeiro Nome" value={firstName} onChangeText={setFirstName} />
       <TextInput placeholder="Último Nome" value={lastName} onChangeText={setLastName} />
       <Button title="Cadastrar" onPress={handleSignUp} />
-      <Button title="Fazer Login" onPress={toSignIn} />
     </View>
   );
 };

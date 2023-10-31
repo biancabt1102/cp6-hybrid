@@ -21,7 +21,7 @@ const CreateCommunityScreen = () => {
           createdBy: user.uid,
         });
 
-        navigation.navigate("SearchCommunities" as never);
+        navigation.navigate("Procurar Comunidades" as never);
       } else {
         console.error('Nenhum usuário autenticado encontrado.');
       }

@@ -18,17 +18,9 @@ const SignInScreen = () => {
       setcurrentUser(user.displayName);
 
       // Navegue para a tela desejada apos o login
-      navigation.navigate("SearchCommunities" as never);
+      navigation.navigate("MainTabs" as never);
     } catch (error) {
       console.error('Erro ao fazer login:', error);
-    }
-  };
-
-  const toSignUp = async () => {
-    try {
-      navigation.navigate("SignUp" as never);
-    } catch (error) {
-      console.error('Erro ao mudar pra tela de cadastro:', error);
     }
   };
 
@@ -37,7 +29,6 @@ const SignInScreen = () => {
       <Text>Login</Text>
       <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
       <Button title="Entrar" onPress={handleSignIn} />
-      <Button title="Fazer Cadastro" onPress={toSignUp} />
     </View>
   );
 };
