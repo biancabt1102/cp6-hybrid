@@ -6,6 +6,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import CreateCommunityScreen from '../screens/CreateCommunityScreen';
 import SearchCommunitiesScreen from '../screens/SearchCommunitiesScreen';
 import CommunityDetails from '../screens/CommunityDetails';
+import SignInScreen from '../screens/SignInScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,7 @@ const AppRoutes = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="CreateCommunity" component={CreateCommunityScreen} />
         <Stack.Screen name="SearchCommunities" component={SearchCommunitiesScreen} />
