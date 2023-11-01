@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, FlatList, TextInput } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../components/AuthContext';
 
 const SearchCommunitiesScreen = () => {
   const [communities, setCommunities] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const { setCommunity } = useAuth();
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -29,8 +31,9 @@ const SearchCommunitiesScreen = () => {
     fetchCommunities();
   }, [searchTerm]);
 
-  const handleCommunityPress = () => {
+  const handleCommunityPress = (communityName : string) => {
     // Navegue para a tela de detalhes da comunidade e passe a comunidade selecionada como parametro.
+    setCommunity(communityName);
     navigation.navigate('CommunityDetails' as never);
   };
 
@@ -44,10 +47,10 @@ const SearchCommunitiesScreen = () => {
       />
       <FlatList
         data={communities}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.createdBy}
         renderItem={({ item }) => (
           <View>
-            <Button title={item.name} onPress={() => handleCommunityPress()} />
+            <Button title={item.name} onPress={() => handleCommunityPress(item.name)} />
           </View>
         )}
       />

@@ -25,9 +25,10 @@ const SignUpScreen = () => {
         username,
         firstName,
         lastName,
+        displayName: username,
       });
 
-      navigation.navigate("CreateCommunity" as never);
+      navigation.navigate("MainTabs" as never);
     } catch (error) {
       console.error('Erro ao criar conta:', error);
     }
