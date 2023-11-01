@@ -19,6 +19,33 @@ const SignInScreen = () => {
   const { setcurrentUser } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]); // Array de notificações
 
+  useEffect(() => {
+    // Crie um listener para escutar por mudanças em todas as notificações
+    const notificationsRef = firestore().collection('notification');
+    const notificationsListener = notificationsRef.onSnapshot(async (snapshot) => {
+      const results: any[] = [];
+      
+      snapshot.forEach((doc) => {
+        results.push(doc.data());
+      });  
+      
+      console.log(results)
+      setNotifications(results);
+
+      // Verifique se há novas notificações para o usuário logado
+      const lowercaseEmail = email?.toLowerCase();
+      results.forEach(results => {
+        if (results.recipient?.toLowerCase() === lowercaseEmail) {
+          handleInvite(results.title, results.body);
+        }
+      });
+      
+    });
+
+    // Remova o listener quando o componente for desmontado
+    return () => notificationsListener();
+  }, []);
+
   const handleSignIn = async () => {
     try {
       const userCredential = await auth().signInWithEmailAndPassword(email, 'password');
@@ -33,34 +60,12 @@ const SignInScreen = () => {
         setcurrentUser(username);
       }
 
-      await fetchNotifications();
-
-      const lowercaseEmail = email.toLowerCase();
-      notifications.forEach(notification => {
-        if (notification.recipient.toLowerCase() === lowercaseEmail) {
-          handleInvite(notification.title, notification.body);
-        }
-      });
-
       // Navegue para a tela desejada após o login
       navigation.navigate("MainTabs" as never);
     } catch (error) {
       console.error('Erro ao fazer login:', error);
     }
   };
-
-  const fetchNotifications = async () => {
-    const notificationsRef = firestore().collection('notification');
-    const querySnapshot = await notificationsRef.get();
-    const results: any[] = [];
-
-    querySnapshot.forEach((doc) => {
-      results.push(doc.data());
-    });
-
-    setNotifications(results);
-    console.log(results);
-  }
 
   const handleInvite = async (title: string, body: string) => {
     await notifee.requestPermission();
@@ -80,6 +85,17 @@ const SignInScreen = () => {
         },
       }
     });
+
+    // Agora, você pode excluir a notificação do Firestore
+    const lowercaseEmail = email?.toLowerCase();
+    const notificationRef = firestore().collection('notification').where('recipient', '==', lowercaseEmail);
+
+    notificationRef.get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        doc.ref.delete(); // Exclua o documento do Firestore
+      });
+    });
+
   };
 
   return (
