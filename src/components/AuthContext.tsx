@@ -1,16 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-// Defina o contexto de autenticacao
-type AuthContextType = {
-  community: string | null;
-  setCommunity: (community: string | null) => void;
-  currentUser: string | null;
-  setcurrentUser: (currentUser: string | null) => void;
-  currentEmail: string | null;
-  setcurrentEmail: (currentUser: string | null) => void;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContext | undefined>(undefined);
 
 // Crie um componente de contexto de autenticacao para fornecer o contexto aos componentes filhos
 type AuthProviderProps = {

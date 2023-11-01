@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, FlatList, TextInput } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../components/AuthContext';
+import { useAuth } from '../../components/AuthContext';
 import notifee, { EventType } from '@notifee/react-native';
+import { handleInvite } from '../../components/Notification';
+
 
 const SearchCommunitiesScreen = () => {
   const [communities, setCommunities] = useState<any[]>([]);
@@ -66,36 +68,6 @@ const SearchCommunitiesScreen = () => {
     // Navegue para a tela de detalhes da comunidade e passe a comunidade selecionada como parâmetro.
     setCommunity(communityName);
     navigation.navigate('CommunityDetails' as never);
-  };
-
-  const handleInvite = async (title: string, body: string, email: string | null) => {
-    await notifee.requestPermission();
-
-    const channelId = await notifee.createChannel({
-      id: 'users',
-      name: 'usuarios'
-    });
-
-    await notifee.displayNotification({
-      title: title,
-      body: body,
-      android: {
-        channelId,
-        pressAction: {
-          id: 'default',
-        },
-      }
-    });
-
-    // Agora, você pode excluir a notificação do Firestore
-    const lowercaseEmail = email?.toLowerCase();
-    const notificationRef = firestore().collection('notification').where('recipient', '==', lowercaseEmail);
-
-    await notificationRef.get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        doc.ref.delete(); // Exclua o documento do Firestore
-      });
-    });
   };
 
   return (

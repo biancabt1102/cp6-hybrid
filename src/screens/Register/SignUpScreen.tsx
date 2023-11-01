@@ -3,11 +3,11 @@ import { View, Text, TextInput, Button, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../components/AuthContext';
+import { useAuth } from '../../components/AuthContext';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState('');
+  let [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -27,7 +27,7 @@ const SignUpScreen = () => {
 
       // Salvar os dados do usuario no Firebase Firestore
       await firestore().collection('users').doc(user.uid).set({
-        email,
+        email: email.toLowerCase(),
         username,
         firstName,
         lastName,

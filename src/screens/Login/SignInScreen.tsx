@@ -3,7 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Button, Text, TextInput, View, Alert} from 'react-native';
-import { useAuth } from '../components/AuthContext';
+import { useAuth } from '../../components/AuthContext';
 
 const SignInScreen = () => {
   const navigation = useNavigation();

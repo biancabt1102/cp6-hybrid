@@ -3,11 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import SignUpScreen from '../screens/SignUpScreen';
-import SignInScreen from '../screens/SignInScreen';
-import CreateCommunityScreen from '../screens/CreateCommunityScreen';
-import SearchCommunitiesScreen from '../screens/SearchCommunitiesScreen';
-import CommunityDetails from '../screens/CommunityDetails';
+import SignUpScreen from '../screens/Register/SignUpScreen';
+import SignInScreen from '../screens/Login/SignInScreen';
+import CreateCommunityScreen from '../screens/CreateCommunity/CreateCommunityScreen';
+import SearchCommunitiesScreen from '../screens/SearchCommunities/SearchCommunitiesScreen';
+import CommunityDetailsScreen from '../screens/CommuityDetails/CommunityDetailsScreen';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const Stack = createNativeStackNavigator();
@@ -68,7 +68,7 @@ const AppRoutes = () => {
       <Stack.Navigator screenOptions={{ headerShown: false}}>
         <Stack.Screen name="SignTabs" component={SignNavigator} />
         <Stack.Screen name="MainTabs" component={MainTabNavigator} />
-        <Stack.Screen name="CommunityDetails" component={CommunityDetails} />
+        <Stack.Screen name="CommunityDetails" component={CommunityDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -34,6 +34,7 @@ const CreateCommunityScreen = () => {
           name: communityName
         });
 
+        setCommunityName('');
         navigation.navigate("Procurar Comunidades" as never);
       } else {
         console.error('Nenhum usuário autenticado encontrado.');
