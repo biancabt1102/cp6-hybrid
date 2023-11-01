@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList, TextInput } from 'react-native';
+import notifee, { EventType } from '@notifee/react-native';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../components/AuthContext';
-import notifee, { EventType } from '@notifee/react-native';
 import { handleInvite } from '../../components/Notification';
+import style from './Styles';
 
 
 const SearchCommunitiesScreen = () => {
@@ -71,20 +72,20 @@ const SearchCommunitiesScreen = () => {
   };
 
   return (
-    <View>
-      <Text>Pesquisar Comunidades:</Text>
+    <View style={style.body}>
       <TextInput
-        placeholder="Nome da Comunidade"
+        placeholder="Pesquisar Comunidades 🔎"
         value={searchTerm}
         onChangeText={(text) => setSearchTerm(text)}
+        style={style.field}
       />
       <FlatList
         data={communities}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <View>
-            <Button title={item.name} onPress={() => handleCommunityPress(item.name)} />
-          </View>
+          <TouchableOpacity style={style.boton} onPress={() => handleCommunityPress(item.name)}>
+            <Text style={style.textBoton}>{item.name}</Text>
+          </TouchableOpacity>
         )}
       />
     </View>

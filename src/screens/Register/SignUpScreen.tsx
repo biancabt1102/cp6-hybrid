@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../components/AuthContext';
+import style from './Styles';
+
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -41,14 +43,17 @@ const SignUpScreen = () => {
   };
 
   return (
-    <View>
-      <Text>Cadastro</Text>
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-      <TextInput placeholder="Nome de Usuário" value={username} onChangeText={setUsername} />
-      <TextInput placeholder="Primeiro Nome" value={firstName} onChangeText={setFirstName} />
-      <TextInput placeholder="Último Nome" value={lastName} onChangeText={setLastName} />
-      <Button title="Cadastrar" onPress={handleSignUp} />
+    <ScrollView >
+    <View style={style.body}>
+      <TextInput style={style.field} placeholder="Email" value={email} onChangeText={setEmail} />
+      <TextInput style={style.field} placeholder="Nome de Usuário" value={username} onChangeText={setUsername} />
+      <TextInput style={style.field} placeholder="Primeiro Nome" value={firstName} onChangeText={setFirstName} />
+      <TextInput style={style.field} placeholder="Último Nome" value={lastName} onChangeText={setLastName} />
+      <TouchableOpacity style={style.boton} onPress={handleSignUp}>
+        <Text style={style.textBoton}>Cadastrar</Text>
+      </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 };
 

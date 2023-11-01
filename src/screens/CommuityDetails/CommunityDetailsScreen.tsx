@@ -1,9 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, FlatList, Text, TextInput, View } from 'react-native';
+import { Alert, Button, FlatList, Text, TextInput, View, StyleSheet, TouchableOpacity} from 'react-native';
 import { useAuth } from '../../components/AuthContext';
 import { handleInvite } from '../../components/Notification';
 import { handleCreateNotifee } from './components/CreateNotifee';
+import style from './Styles';
 
 const CommunityDetailsScreen = () => {
   const { community, currentUser, currentEmail } = useAuth();
@@ -49,39 +50,43 @@ const CommunityDetailsScreen = () => {
   };
 
   return (
-    <View>
-      <Text>Detalhes da Comunidade: {community}</Text>
-      <Button title="Entrar na Comunidade" onPress={handleEnterCommunity} />
+    <View style={style.body}>
+      <Text style={style.title}>Nome: {community}</Text>
+      <TouchableOpacity style={style.boton} onPress={handleEnterCommunity}>
+        <Text style={style.textBoton}>Entrar na Comunidade</Text>
+      </TouchableOpacity>
 
-      {/* Campo de pesquisa para filtrar usuarios */}
-      <Text>Pesquisar Usuários:</Text>
       <TextInput
-        placeholder="Nome do Usuário"
+        placeholder="Pesquisar Usuários 🔎"
         value={searchTerm}
         onChangeText={(text) => setSearchTerm(text)}
+        style={style.field}
       />
 
       <FlatList
         data={users}
         keyExtractor={(item) => item.email}
         renderItem={({ item }) => (
-          <View>
+          <View style={style.container}>
             <View>
-              <Text>Username: {item.username}</Text>
-              <Text>E-mail: {item.email}</Text>
+              <Text style={style.form}>Username: {item.username}</Text>
+              <Text style={style.form}>E-mail: {item.email}</Text>
             </View>
             <View>
-              <Text>Nome: {item.firstName}</Text>
-              <Text>Sobrenome: {item.lastName}</Text>
-              {currentEmail !== item.email && (
-                <Button title={"Convidar"} onPress={() => handleNotifee(item.username, item.email)} />
+              <Text style={style.form}>Nome: {item.firstName}</Text>
+              <Text style={style.form}>Sobrenome: {item.lastName}</Text>
+              {currentEmail === item.email ? (
+                <Text style={style.currentUserText}>Você é este usuário!</Text>
+              ) : currentEmail !== item.email && (
+                <TouchableOpacity style={style.boton} onPress={() => handleNotifee(item.username, item.email)}>
+                  <Text style={style.textBoton}>Convidar</Text>
+                </TouchableOpacity>
               )}
+              </View>
             </View>
-          </View>
-        )}
-      />
-    </View>
-  );
-};
-
+          )}
+        />
+      </View>
+    );
+  };
 export default CommunityDetailsScreen;

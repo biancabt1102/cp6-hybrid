@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+import style from './Styles';
 
 const CreateCommunityScreen = () => {
   const navigation = useNavigation();
@@ -45,10 +46,16 @@ const CreateCommunityScreen = () => {
   };
 
   return (
-    <View>
-      <Text>Criar Comunidade</Text>
-      <TextInput placeholder="Nome da Comunidade" value={communityName} onChangeText={setCommunityName} />
-      <Button title="Criar Comunidade" onPress={handleCreateCommunity} />
+    <View style={style.body}>
+      <TextInput 
+        placeholder="Nome da Comunidade" 
+        value={communityName} 
+        onChangeText={setCommunityName}
+        style={style.field} 
+      />
+      <TouchableOpacity style={style.boton} onPress={handleCreateCommunity}>
+            <Text style={style.textBoton}>Criar Comunidade</Text>
+      </TouchableOpacity>
     </View>
   );
 };

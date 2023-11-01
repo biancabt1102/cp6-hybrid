@@ -65,9 +65,9 @@ const MainTabNavigator = () => {
 const AppRoutes = () => {
   return (
     <NavigationContainer >
-      <Stack.Navigator screenOptions={{ headerShown: false}}>
+      <Stack.Navigator >
         <Stack.Screen name="SignTabs" component={SignNavigator} />
-        <Stack.Screen name="MainTabs" component={MainTabNavigator} />
+        <Stack.Screen name="Communities" component={MainTabNavigator} />
         <Stack.Screen name="CommunityDetails" component={CommunityDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>

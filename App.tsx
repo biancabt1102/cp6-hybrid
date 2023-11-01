@@ -7,7 +7,7 @@ import { AuthProvider } from "./src/components/AuthContext";
 
 function App() {
   return (
-    <SafeAreaView style={estilo.tela}>
+    <SafeAreaView style={style.screen}>
       <StatusBar />
       <AuthProvider>
         <AppRoutes/>
@@ -16,8 +16,8 @@ function App() {
   );
 }
 
-const estilo = StyleSheet.create({
-  tela: {
+const style = StyleSheet.create({
+  screen: {
     flex: 1,
   },
 });

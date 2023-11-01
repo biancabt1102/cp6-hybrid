@@ -2,8 +2,9 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Button, Text, TextInput, View, Alert} from 'react-native';
+import { Button, Text, TextInput, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 import { useAuth } from '../../components/AuthContext';
+import style from './Styles';
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -34,7 +35,7 @@ const SignInScreen = () => {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{ name: 'MainTabs' }],
+          routes: [{ name: 'Communities' }],
         })
       );
     } catch (error) {
@@ -43,10 +44,11 @@ const SignInScreen = () => {
   };
 
   return (
-    <View>
-      <Text>Login</Text>
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-      <Button title="Entrar" onPress={handleSignIn} />
+    <View style={style.body}>
+      <TextInput style={style.field} placeholder="Email" value={email} onChangeText={setEmail} />
+      <TouchableOpacity style={style.boton} onPress={handleSignIn}>
+        <Text style={style.textBoton}>Entrar</Text>
+      </TouchableOpacity>
     </View>
   );
 };
