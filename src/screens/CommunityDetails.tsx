@@ -6,32 +6,35 @@ import { useAuth } from '../components/AuthContext';
 import auth from '@react-native-firebase/auth';
 
 const CommunityDetails = () => {
-  const { community, currentUser } = useAuth();
+  const { community, currentUser, currentEmail } = useAuth();
   const [users, setUsers] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const usersRef = firestore().collection('users');
-      const querySnapshot = await usersRef.get();
+    const usersRef = firestore().collection('users');
+
+    const unsubscribe = usersRef.onSnapshot((querySnapshot) => {
       const results: any[] = [];
 
       querySnapshot.forEach((doc) => {
         results.push(doc.data());
       });
 
-      // Filtrar usuarios com base no termo de pesquisa
+      // Filtrar usuários com base no termo de pesquisa
       const filteredUsers = results.filter((user) =>
         user.username.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
       setUsers(filteredUsers);
-    };
+    });
 
-    fetchUsers();
+    return () => {
+      // Certifique-se de cancelar o listener quando o componente for desmontado
+      unsubscribe();
+    };
   }, [searchTerm]);
 
-  const handleInvite = async (username: string) => {
+  const handleInvite = async (username: string | null) => {
     await notifee.requestPermission();
 
     const channelId = await notifee.createChannel({
@@ -40,8 +43,8 @@ const CommunityDetails = () => {
     });
 
     await notifee.displayNotification({
-      title: `Olá ${username}`,
-      body: `${currentUser} convidou você para a comunidade ${community}`,
+      title: `Bem-Vindo a comunidade ${community}`,
+      body: `${username} espero que você se divirta muito aqui 😁`,
       android: {
         channelId,
         pressAction: {
@@ -52,6 +55,7 @@ const CommunityDetails = () => {
   };
 
   const handleEnterCommunity = () => {
+    handleInvite(currentUser);
     Alert.alert('Seja Bem-Vindo', 'Você entrou na comunidade ' + community + "!");
   };
 
@@ -62,7 +66,7 @@ const CommunityDetails = () => {
         // Salvar os dados da notificacao no Firebase Firestore
         await firestore().collection('notification').add({
           sender: currentUser,
-          recipient: email,
+          recipient: email.toLowerCase(),
           title: `Olá ${username}`,
           body: `${currentUser} convidou você para a comunidade ${community}`,
           createdBy: user.uid,
@@ -91,7 +95,7 @@ const CommunityDetails = () => {
 
       <FlatList
         data={users}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.email}
         renderItem={({ item }) => (
           <View>
             <View>
@@ -101,7 +105,9 @@ const CommunityDetails = () => {
             <View>
               <Text>Nome: {item.firstName}</Text>
               <Text>Sobrenome: {item.lastName}</Text>
-              <Button title={"Convidar"} key={item.id} onPress={() => handleCreateNotifee(item.username, item.email)} />
+              {currentEmail !== item.email && (
+                <Button title={"Convidar"} onPress={() => handleCreateNotifee(item.username, item.email)} />
+              )}
             </View>
           </View>
         )}

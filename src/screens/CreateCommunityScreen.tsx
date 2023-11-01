@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
-
 
 const CreateCommunityScreen = () => {
   const navigation = useNavigation();
@@ -11,12 +10,28 @@ const CreateCommunityScreen = () => {
 
   const handleCreateCommunity = async () => {
     try {
+      // Validar os campos antes de prosseguir
+      if (!communityName) {
+        Alert.alert('Erro', 'Por favor, preencha o campo de nome da comunidade.');
+        return;
+      }
+
+      // Verificar se a comunidade com o mesmo nome já existe
+      const existingCommunity = await firestore()
+        .collection('communities')
+        .where('name', '==', communityName)
+        .get();
+
+      if (!existingCommunity.empty) {
+        Alert.alert('Erro', 'Já existe uma comunidade com esse nome. Por favor, escolha outro nome.');
+        return;
+      }
+
       const user = auth().currentUser;
       if (user) {
         // Salvar os dados da comunidade no Firebase Firestore
         await firestore().collection('communities').add({
-          name: communityName,
-          createdBy: user.uid,
+          name: communityName
         });
 
         navigation.navigate("Procurar Comunidades" as never);

@@ -6,6 +6,8 @@ type AuthContextType = {
   setCommunity: (community: string | null) => void;
   currentUser: string | null;
   setcurrentUser: (currentUser: string | null) => void;
+  currentEmail: string | null;
+  setcurrentEmail: (currentUser: string | null) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,9 +20,10 @@ type AuthProviderProps = {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [community, setCommunity] = useState<string | null>(null);
   const [currentUser, setcurrentUser] = useState<string | null>(null);
+  const [currentEmail, setcurrentEmail] = useState<string | null>(null);
 
   return (
-    <AuthContext.Provider value={{ community, setCommunity, currentUser, setcurrentUser}}>
+    <AuthContext.Provider value={{ community, setCommunity, currentUser, setcurrentUser, currentEmail, setcurrentEmail}}>
       {children}
     </AuthContext.Provider>
   );

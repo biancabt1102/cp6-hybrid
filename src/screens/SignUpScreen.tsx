@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,12 @@ const SignUpScreen = () => {
 
   const handleSignUp = async () => {
     try {
+      // Validar os campos antes de prosseguir
+      if (!email || !username || !firstName || !lastName) {
+        Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+        return;
+      }
+
       setcurrentUser(username);
       const userCredential = await auth().createUserWithEmailAndPassword(email, 'password');
       const user = userCredential.user;
@@ -26,11 +32,11 @@ const SignUpScreen = () => {
         firstName,
         lastName,
         displayName: username,
-      });
+      }); 
 
-      navigation.navigate("MainTabs" as never);
+      navigation.navigate("Login" as never);
     } catch (error) {
-      console.error('Erro ao criar conta:', error);
+      Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o usuário.\n' + error);
     }
   };
 
