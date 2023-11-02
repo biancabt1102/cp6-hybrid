@@ -17,7 +17,7 @@ const SignUpScreen = () => {
 
   const handleSignUp = async () => {
     try {
-      // Validar os campos antes de prosseguir
+
       if (!email || !username || !firstName || !lastName) {
         Alert.alert('Erro', 'Por favor, preencha todos os campos.');
         return;
@@ -27,14 +27,13 @@ const SignUpScreen = () => {
       const userCredential = await auth().createUserWithEmailAndPassword(email, 'password');
       const user = userCredential.user;
 
-      // Salvar os dados do usuario no Firebase Firestore
       await firestore().collection('users').doc(user.uid).set({
         email: email.toLowerCase(),
         username,
         firstName,
         lastName,
         displayName: username,
-      }); 
+      });
 
       navigation.navigate("Login" as never);
     } catch (error) {
@@ -44,15 +43,15 @@ const SignUpScreen = () => {
 
   return (
     <ScrollView >
-    <View style={style.body}>
-      <TextInput style={style.field} placeholder="Email" value={email} onChangeText={setEmail} />
-      <TextInput style={style.field} placeholder="Nome de Usuário" value={username} onChangeText={setUsername} />
-      <TextInput style={style.field} placeholder="Primeiro Nome" value={firstName} onChangeText={setFirstName} />
-      <TextInput style={style.field} placeholder="Último Nome" value={lastName} onChangeText={setLastName} />
-      <TouchableOpacity style={style.boton} onPress={handleSignUp}>
-        <Text style={style.textBoton}>Cadastrar</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={style.body}>
+        <TextInput style={style.field} placeholder="Email" value={email} onChangeText={setEmail} />
+        <TextInput style={style.field} placeholder="Nome de Usuário" value={username} onChangeText={setUsername} />
+        <TextInput style={style.field} placeholder="Primeiro Nome" value={firstName} onChangeText={setFirstName} />
+        <TextInput style={style.field} placeholder="Último Nome" value={lastName} onChangeText={setLastName} />
+        <TouchableOpacity style={style.boton} onPress={handleSignUp}>
+          <Text style={style.textBoton}>Cadastrar</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };

@@ -9,6 +9,7 @@ import CreateCommunityScreen from '../screens/CreateCommunity/CreateCommunityScr
 import SearchCommunitiesScreen from '../screens/SearchCommunities/SearchCommunitiesScreen';
 import CommunityDetailsScreen from '../screens/CommuityDetails/CommunityDetailsScreen';
 import Icon from 'react-native-vector-icons/AntDesign';
+import LogOutScreen from '../screens/Logout/LogOutScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,7 +32,7 @@ const SignNavigator = () => {
         fontSize: 15,
       },
     })}
-  >
+    >
       <Tab.Screen name="Login" component={SignInScreen} />
       <Tab.Screen name="Cadastrar" component={SignUpScreen} />
     </Tab.Navigator>
@@ -50,6 +51,9 @@ const MainTabNavigator = () => {
         if (route.name === 'Criar Comunidade') {
           iconComponent = <Icon name="addusergroup" size={30} color={color} />;
         }
+        if (route.name === 'LogOut') {
+          iconComponent = <Icon name="logout" size={30} color={color} />
+        }
         return iconComponent;
       },
       tabBarLabelStyle: {
@@ -58,6 +62,7 @@ const MainTabNavigator = () => {
     })}>
       <Tab.Screen name="Procurar Comunidades" component={SearchCommunitiesScreen} />
       <Tab.Screen name="Criar Comunidade" component={CreateCommunityScreen} />
+      <Tab.Screen name="LogOut" component={LogOutScreen} />
     </Tab.Navigator>
   );
 };

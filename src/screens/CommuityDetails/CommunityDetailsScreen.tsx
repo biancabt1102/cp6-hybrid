@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, FlatList, Text, TextInput, View, StyleSheet, TouchableOpacity} from 'react-native';
+import { Alert, FlatList, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../components/AuthContext';
 import { handleInvite } from '../../components/Notification';
 import { handleCreateNotifee } from './components/CreateNotifee';
@@ -21,7 +21,6 @@ const CommunityDetailsScreen = () => {
         results.push(doc.data());
       });
 
-      // Filtrar usuários com base no termo de pesquisa
       const filteredUsers = results.filter((user) =>
         user.username.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -30,11 +29,10 @@ const CommunityDetailsScreen = () => {
     });
 
     return () => {
-      // Certifique-se de cancelar o listener quando o componente for desmontado
       unsubscribe();
     };
   }, [searchTerm]);
-  
+
   const handleEnterCommunity = () => {
     const title = `Bem-Vindo a comunidade ${community}`;
     const body = `${currentUser} espero que você se divirta muito aqui 😁`;
@@ -42,11 +40,11 @@ const CommunityDetailsScreen = () => {
     Alert.alert('Seja Bem-Vindo', 'Você entrou na comunidade ' + community + "!");
   };
 
-  const handleNotifee = async (username : string, email : string) => {
+  const handleNotifee = async (username: string, email: string) => {
     const title = `Olá ${username}`;
     const body = `${currentUser} convidou você para a comunidade ${community}`;
     handleCreateNotifee(email, currentUser, title, body);
-    Alert.alert('Olá ' + currentUser , 'Seu convite da comunidade ' + community + ' foi enviado com sucesso para ' + username + '!');
+    Alert.alert('Olá ' + currentUser, 'Seu convite da comunidade ' + community + ' foi enviado com sucesso para ' + username + '!');
   };
 
   return (
@@ -82,11 +80,11 @@ const CommunityDetailsScreen = () => {
                   <Text style={style.textBoton}>Convidar</Text>
                 </TouchableOpacity>
               )}
-              </View>
             </View>
-          )}
-        />
-      </View>
-    );
-  };
+          </View>
+        )}
+      />
+    </View>
+  );
+};
 export default CommunityDetailsScreen;

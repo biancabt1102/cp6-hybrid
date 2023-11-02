@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
@@ -11,13 +11,11 @@ const CreateCommunityScreen = () => {
 
   const handleCreateCommunity = async () => {
     try {
-      // Validar os campos antes de prosseguir
       if (!communityName) {
         Alert.alert('Erro', 'Por favor, preencha o campo de nome da comunidade.');
         return;
       }
 
-      // Verificar se a comunidade com o mesmo nome já existe
       const existingCommunity = await firestore()
         .collection('communities')
         .where('name', '==', communityName)
@@ -30,7 +28,6 @@ const CreateCommunityScreen = () => {
 
       const user = auth().currentUser;
       if (user) {
-        // Salvar os dados da comunidade no Firebase Firestore
         await firestore().collection('communities').add({
           name: communityName
         });
@@ -47,14 +44,14 @@ const CreateCommunityScreen = () => {
 
   return (
     <View style={style.body}>
-      <TextInput 
-        placeholder="Nome da Comunidade" 
-        value={communityName} 
+      <TextInput
+        placeholder="Nome da Comunidade"
+        value={communityName}
         onChangeText={setCommunityName}
-        style={style.field} 
+        style={style.field}
       />
       <TouchableOpacity style={style.boton} onPress={handleCreateCommunity}>
-            <Text style={style.textBoton}>Criar Comunidade</Text>
+        <Text style={style.textBoton}>Criar Comunidade</Text>
       </TouchableOpacity>
     </View>
   );

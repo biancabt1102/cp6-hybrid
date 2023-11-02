@@ -2,7 +2,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Button, Text, TextInput, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
+import { Button, Text, TextInput, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../components/AuthContext';
 import style from './Styles';
 
@@ -21,7 +21,6 @@ const SignInScreen = () => {
       const userCredential = await auth().signInWithEmailAndPassword(email, 'password');
       const user = userCredential.user;
 
-      // Recupere os dados do usuário do Firebase Firestore
       const userDoc = await firestore().collection('users').doc(user.uid).get();
       if (userDoc.exists) {
         const userData = userDoc.data();
@@ -31,7 +30,6 @@ const SignInScreen = () => {
         setcurrentEmail(email)
       }
 
-      // Navegue para a tela desejada após o login
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
